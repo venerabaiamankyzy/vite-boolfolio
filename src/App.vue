@@ -1,10 +1,11 @@
 <script>
 import axios from "axios";
 import AppHeader from "./components/AppHeader.vue";
+import ProjectList from "./components/ProjectList.vue";
 export default {
   data() {
     return {
-      title: "Hello World",
+      title: "Boolfolio",
       projects: [],
     };
   },
@@ -23,19 +24,14 @@ export default {
 
   components: {
     AppHeader,
-    // AppMain,
+    ProjectList,
   },
 };
 </script>
 
 <template>
-  <AppHeader />
-  <h1 class="text-danger">
-    {{ title }}
-  </h1>
-  <ul>
-    <li v-for="project in projects">{{ project.title }}</li>
-  </ul>
+  <AppHeader :title="title" />
+  <ProjectList :projects="projects" title="Most recent" class="my-4" />
 </template>
 
 <style lang="scss" scoped></style>
