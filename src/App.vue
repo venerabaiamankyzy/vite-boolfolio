@@ -6,14 +6,26 @@ export default {
   data() {
     return {
       title: "Boolfolio",
-      projects: [],
+
+      projects: {
+        list: [],
+        pages: [],
+      },
     };
   },
+  components: {
+    AppHeader,
+    ProjectList,
+  },
+
+  emits: ["changePage"],
 
   methods: {
-    fetchProjects() {
-      axios.get("http://127.0.0.1:8000/api/projects").then((response) => {
-        this.projects = response.data;
+    fetchProjects(endpoint = null) {
+      if (!endpoint) endpoint = "http://127.0.0.1:8000/api/projects";
+      axios.get(endpoint).then((response) => {
+        this.projects.list = response.data.data;
+        this.projects.pages = response.data.links;
       });
     },
   },
@@ -21,17 +33,18 @@ export default {
   created() {
     this.fetchProjects();
   },
-
-  components: {
-    AppHeader,
-    ProjectList,
-  },
 };
 </script>
 
 <template>
   <AppHeader :title="title" />
-  <ProjectList :projects="projects" title="Most recent" class="my-4" />
+  <ProjectList
+    :projects="projects.list"
+    :pages="projects.pages"
+    title="Most recent"
+    class="my-4"
+    @changePage="fetchProjects"
+  />
 </template>
 
 <style lang="scss" scoped></style>
